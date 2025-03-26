@@ -46,6 +46,14 @@ void Game::initFruits()
     this->Fruit.setScale(sf::Vector2f(0.5f,0.5f));
     this->Fruit.setFillColor(sf::Color::Red);
 }
+//initialize Snake
+void Game::initSnake()
+{
+    this->Snake.setPosition(10.f,10.f);
+    this->Snake.setSize(sf::Vector2f(50.f,50.f));
+    this->Snake.setScale(sf::Vector2f(0.5f,0.5f));
+    this->Snake.setFillColor(sf::Color::Blue);
+}
 //Ends the game
 const bool Game::getEndGame() const
 {
@@ -67,6 +75,19 @@ void Game::spawnFruit()
    );
    // Spawn Fruit
    this->Fruits.push_back(this->Fruit);
+}
+//spawn Snake
+void Game::spawnSnake()
+{
+    /*
+        return void 
+        spawns Snake
+        sets position to the center of the window
+    */
+   this->Snake.setPosition(
+    (this->window->getSize().x - this->Snake.getSize().x) / 2,
+    (this->window->getSize().y - this->Snake.getSize().y) / 2
+   );
 }
 //Updates position of Fruit
 void Game::updateFruits()
@@ -95,6 +116,7 @@ void Game::renderFruits(sf::RenderTarget& target)
     //render fruit
     target.draw(this->Fruit);
 }
+//Game uitext 
 void Game::updateText()
 {
     std::stringstream ss;
@@ -106,6 +128,16 @@ void Game::renderText(sf::RenderTarget& target)
 {
     target.draw(this->uiText);
 }
+// updates snake
+void Game::updateSnake()
+{
+    this->spawnSnake();
+}
+// renders snake
+void Game::renderSnake(sf::RenderTarget& target)
+{
+    target.draw(this->Snake);
+}
 // Constructors / Deconstructors
 Game::Game()
 {
@@ -114,6 +146,7 @@ Game::Game()
     this->initFonts();
     this->initText();
     this->initFruits();
+    this->initSnake();
 }
 Game::~Game()
 {
@@ -157,6 +190,8 @@ void Game::update()
         this->updateFruits();
 
         this->updateText();
+
+        this->updateSnake();
     }
 }
 void Game::render()
@@ -174,6 +209,8 @@ void Game::render()
    this->renderFruits(*this->window);
 
    this->renderText(*this->window);
+
+   this->renderSnake(*this->window);
 
    this->window->display();
 }
