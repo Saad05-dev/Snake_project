@@ -27,8 +27,15 @@ class Game
         std::vector<sf::RectangleShape> Fruits;
         sf::RectangleShape Fruit;
 
+        //resources
+        sf::Font font;
+
+        //Text
+        sf::Text uiText;
+
         //Game logic
         bool endGame;
+        unsigned points;
         int Fruitspawn;
         float FruitspawnTimer;
         float FruitspawnTimerMax;
@@ -37,6 +44,8 @@ class Game
         void initVariables();
         void initWindow();
         void initFruits();
+        void initFonts();
+        void initText();
 
     public:
 
@@ -53,8 +62,10 @@ class Game
 
         void pollEvents();
         void updateFruits();
+        void updateText();
         void update();
 
         void renderFruits(sf::RenderTarget& target);
+        void renderText(sf::RenderTarget& target);
         void render();
 };
