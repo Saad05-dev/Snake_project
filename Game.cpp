@@ -26,7 +26,7 @@ void Game::initWindow()
 //Game text's fonts
 void Game::initFonts()
 {
-    if(this->font.loadFromFile("Fonts/PressStart2P-Regular.ttf"))
+    if(!this->font.loadFromFile("Fonts/PressStart2P-Regular.ttf"))
     {
         std::cout << "ERROR::GAME::INITFONTS::Failed to load font!" << "\n";
     }
