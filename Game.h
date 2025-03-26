@@ -26,6 +26,7 @@ class Game
         //Game objects
         std::vector<sf::RectangleShape> Fruits;
         sf::RectangleShape Fruit;
+        sf::RectangleShape Snake;
 
         //resources
         sf::Font font;
@@ -39,6 +40,7 @@ class Game
         int Fruitspawn;
         float FruitspawnTimer;
         float FruitspawnTimerMax;
+        float SnakeSize;
 
         //private functions
         void initVariables();
@@ -46,6 +48,7 @@ class Game
         void initFruits();
         void initFonts();
         void initText();
+        void initSnake();
 
     public:
 
@@ -59,13 +62,16 @@ class Game
 
         //functions
         void spawnFruit();
+        void spawnSnake();
 
         void pollEvents();
         void updateFruits();
         void updateText();
+        void updateSnake();
         void update();
 
         void renderFruits(sf::RenderTarget& target);
         void renderText(sf::RenderTarget& target);
+        void renderSnake(sf::RenderTarget& target);
         void render();
 };
