@@ -23,9 +23,20 @@ class Game
         sf::VideoMode videoMode;
         sf::Event ev;
 
+        //Game objects
+        std::vector<sf::RectangleShape> Fruits;
+        sf::RectangleShape Fruit;
+
+        //Game logic
+        bool endGame;
+        int Fruitspawn;
+        float FruitspawnTimer;
+        float FruitspawnTimerMax;
+
         //private functions
         void initVariables();
         void initWindow();
+        void initFruits();
 
     public:
 
@@ -35,9 +46,15 @@ class Game
 
         // Accessors
         const bool running() const;
+        const bool getEndGame() const;
 
         //functions
+        void spawnFruit();
+
         void pollEvents();
+        void updateFruits();
         void update();
+
+        void renderFruits(sf::RenderTarget& target);
         void render();
 };
