@@ -9,6 +9,7 @@ void Game::initVariables()
 
     //Game logic
     this->Fruitspawn = 1;
+    this->points = 0;
     this->endGame = false;
     this->FruitspawnTimerMax = 10.f;
     this->FruitspawnTimer = this->FruitspawnTimerMax;
@@ -21,6 +22,21 @@ void Game::initWindow()
     this->window = new sf::RenderWindow(this->videoMode,"Snake Game"
         ,sf::Style::Titlebar | sf::Style::Close );
     this->window->setFramerateLimit(60);
+}
+//Game text's fonts
+void Game::initFonts()
+{
+    if(this->font.loadFromFile("Fonts/PressStart2P-Regular.ttf"))
+    {
+        std::cout << "ERROR::GAME::INITFONTS::Failed to load font!" << "\n";
+    }
+}
+void Game::initText()
+{
+    this->uiText.setFont(this->font);
+    this->uiText.setCharacterSize(24);
+    this->uiText.setFillColor(sf::Color::White);
+    this->uiText.setString("NONE");
 }
 //initialize Fruit
 void Game::initFruits()
@@ -73,16 +89,30 @@ void Game::updateFruits()
     }
    }
 }
+//renders Fruits
 void Game::renderFruits(sf::RenderTarget& target)
 {
     //render fruit
     target.draw(this->Fruit);
+}
+void Game::updateText()
+{
+    std::stringstream ss;
+
+    ss << "Points: "<< this->points<<"\n";
+    this->uiText.setString(ss.str());
+}
+void Game::renderText(sf::RenderTarget& target)
+{
+    target.draw(this->uiText);
 }
 // Constructors / Deconstructors
 Game::Game()
 {
     this->initVariables();
     this->initWindow();
+    this->initFonts();
+    this->initText();
     this->initFruits();
 }
 Game::~Game()
@@ -125,6 +155,8 @@ void Game::update()
     if(this->endGame == false)
     {
         this->updateFruits();
+
+        this->updateText();
     }
 }
 void Game::render()
@@ -140,6 +172,8 @@ void Game::render()
 
    //Draw game objects
    this->renderFruits(*this->window);
+
+   this->renderText(*this->window);
 
    this->window->display();
 }
