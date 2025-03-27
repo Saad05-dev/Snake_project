@@ -1,15 +1,5 @@
 #pragma once
-
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <vector>
-#include <sstream>
+#include "Snake.h"
 
 // start of Game class
 
@@ -26,7 +16,7 @@ class Game
         //Game objects
         std::vector<sf::RectangleShape> Fruits;
         sf::RectangleShape Fruit;
-        sf::RectangleShape Snake;
+        Snake snake;
 
         //resources
         sf::Font font;
@@ -40,7 +30,7 @@ class Game
         int Fruitspawn;
         float FruitspawnTimer;
         float FruitspawnTimerMax;
-        float SnakeSize;
+        
 
         //private functions
         void initVariables();
@@ -48,7 +38,6 @@ class Game
         void initFruits();
         void initFonts();
         void initText();
-        void initSnake();
 
     public:
 
@@ -67,11 +56,9 @@ class Game
         void pollEvents();
         void updateFruits();
         void updateText();
-        void updateSnake();
         void update();
 
         void renderFruits(sf::RenderTarget& target);
         void renderText(sf::RenderTarget& target);
-        void renderSnake(sf::RenderTarget& target);
         void render();
 };
