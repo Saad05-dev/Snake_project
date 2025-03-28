@@ -14,6 +14,7 @@ void Snake::initShape()
 
 Snake::Snake(float x,float y)
 {
+    //spawn Snake
     this->snake.setPosition(x,y);
 
     this->initVariables();
@@ -48,4 +49,12 @@ void Snake::updateInput()
         this->snake.move(0.f,this->movementSpeed);
     }
     //window bound
+}
+void Snake::update()
+{
+    this->updateInput();
+}
+void Snake::render(sf::RenderTarget* target)
+{
+    target->draw(this->snake);
 }
