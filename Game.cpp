@@ -159,7 +159,7 @@ void Game::update()
 
         this->updateText();
 
-        this->snake.update();
+        this->snake.update(this->window);
     }
 }
 void Game::render()
