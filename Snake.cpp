@@ -12,11 +12,15 @@ void Snake::initShape()
     this->snake.setSize(sf::Vector2f(50.f,50.f));
     this->snake.setScale(sf::Vector2f(0.5f,0.5f));
 }
-
-Snake::Snake(float x,float y)
+//function to center the snake in window
+void Snake::SnakePos(float x,float y)
 {
     //spawn Snake
     this->snake.setPosition(x,y);
+}
+Snake::Snake(float x,float y)
+{
+    this->SnakePos();
 
     this->initVariables();
     this->initShape();
