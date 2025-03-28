@@ -29,7 +29,8 @@ public:
     ~Snake();
 
     void updateInput();
-    void update();
+    void updateWindowBoundsCoollision(const sf::RenderTarget* target);
+    void update(const sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
 };
 
