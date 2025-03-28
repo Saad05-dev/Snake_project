@@ -107,6 +107,13 @@ void Game::renderText(sf::RenderTarget& target)
 {
     target.draw(this->uiText);
 }
+//center Snake
+void Game::SnakePos(){
+    float X = window->getSize().x / 2.f;
+    float Y = window->getSize().y / 2.f;
+
+    snake.SnakePos(X,Y); //call's  snake function to update the position
+}
 // Constructors / Deconstructors
 Game::Game()
 {
@@ -115,6 +122,7 @@ Game::Game()
     this->initFonts();
     this->initText();
     this->initFruits();
+    this->SnakePos();
 }
 Game::~Game()
 {
