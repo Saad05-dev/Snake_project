@@ -158,6 +158,8 @@ void Game::update()
         this->updateFruits();
 
         this->updateText();
+
+        this->snake.update();
     }
 }
 void Game::render()
@@ -175,6 +177,8 @@ void Game::render()
    this->renderFruits(*this->window);
 
    this->renderText(*this->window);
+
+   this->snake.render(this->window);
 
    this->window->display();
 }
