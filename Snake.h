@@ -18,7 +18,7 @@ private:
     
     sf::RectangleShape snake;
 
-    //Snale Movement speed
+    //Snake Movement speed
     float movementSpeed;
 
     void initVariables();
@@ -29,6 +29,7 @@ public:
     ~Snake();
 
     void updateInput();
+    void SnakePos(float x = 0.f,float y = 0.f);
     void updateWindowBoundsCoollision(const sf::RenderTarget* target);
     void update(const sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
