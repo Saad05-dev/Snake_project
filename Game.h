@@ -38,6 +38,8 @@ class Game
         void initFruits();
         void initFonts();
         void initText();
+        //center snake Pos
+        void SnakePos();
 
     public:
 
@@ -51,7 +53,6 @@ class Game
 
         //functions
         void spawnFruit();
-        void spawnSnake();
 
         void pollEvents();
         void updateFruits();
