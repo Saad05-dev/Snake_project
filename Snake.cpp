@@ -10,6 +10,7 @@ void Snake::initShape()
 {
     this->snake.setFillColor(sf::Color::Blue);
     this->snake.setSize(sf::Vector2f(50.f,50.f));
+    this->snake.setScale(sf::Vector2f(0.5f,0.5f));
 }
 
 Snake::Snake(float x,float y)
@@ -50,9 +51,28 @@ void Snake::updateInput()
     }
     //window bound
 }
-void Snake::update()
+//Snake map bounds
+void Snake::updateWindowBoundsCoollision(const sf::RenderTarget* target)
+{
+    //Left bound
+    if(this->snake.getGlobalBounds().left <= 0.f)
+        this->snake.setPosition(0.f,this->snake.getGlobalBounds().top);
+    //Right bound
+    if(this->snake.getGlobalBounds().left + this->snake.getGlobalBounds().width >= target->getSize().x)
+        this->snake.setPosition(target->getSize().x - this->snake.getGlobalBounds().width,this->snake.getGlobalBounds().top);
+    //Top bound
+    if(this->snake.getGlobalBounds().top <= 0.f)
+        this->snake.setPosition(this->snake.getGlobalBounds().left,0.f);
+    //Bottom bound
+    if(this->snake.getGlobalBounds().top + this->snake.getGlobalBounds().height >= target->getSize().y)
+        this->snake.setPosition(this->snake.getGlobalBounds().left,target->getSize().y - this->snake.getGlobalBounds().height);
+}
+void Snake::update(const sf::RenderTarget* target)
 {
     this->updateInput();
+
+    //Window bounds
+    this->updateWindowBoundsCoollision(target);
 }
 void Snake::render(sf::RenderTarget* target)
 {
