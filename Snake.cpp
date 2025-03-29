@@ -29,6 +29,11 @@ Snake::Snake(float x,float y)
 Snake::~Snake()
 {
 }
+//Gets Snake shape
+const sf::RectangleShape&  Snake::snakeShape() const
+{
+    return this->snake;
+}
 //Snake input control
 void Snake::updateInput()
 {
