@@ -14,10 +14,10 @@ void Fruit::initFruit(sf::RenderTarget& window)
     this->fruit.setFillColor(sf::Color::Red);
 
    this->fruit.setPosition(
-    static_cast<float>(rand() % window.getSize().x 
-        - this->fruit.getSize().x),
-    static_cast<float>(rand() % window.getSize().y
-        - this->fruit.getSize().y)
+    std::max(0.f,static_cast<float>(rand() % window.getSize().x 
+        - this->fruit.getSize().x)),
+    std::max(0.f,static_cast<float>(rand() % window.getSize().y
+        - this->fruit.getSize().y))
    );
 }
 Fruit::Fruit(sf::RenderWindow& window)
