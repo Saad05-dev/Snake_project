@@ -67,6 +67,7 @@ void Game::updateCollision()
             this->fruits[i].fruitShape().getGlobalBounds()))
             {
                 this->fruits.erase(this->fruits.begin() + i);
+                this->points ++;
             }
     }
 }
