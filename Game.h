@@ -7,16 +7,14 @@ class Game
 {
     private:
         //variables
-
         //Window
         sf::RenderWindow *window;
         sf::VideoMode videoMode;
         sf::Event ev;
 
         //Game objects
-        std::vector<sf::RectangleShape> Fruits;
-        sf::RectangleShape Fruit;
         Snake snake;
+        std::vector<Fruit> fruits;
 
         //resources
         sf::Font font;
@@ -31,11 +29,9 @@ class Game
         float FruitspawnTimer;
         float FruitspawnTimerMax;
         
-
         //private functions
         void initVariables();
         void initWindow();
-        void initFruits();
         void initFonts();
         void initText();
         //center snake Pos
@@ -52,14 +48,13 @@ class Game
         const bool getEndGame() const;
 
         //functions
-        void spawnFruit();
 
         void pollEvents();
-        void updateFruits();
+        void spawnFruits();
         void updateText();
+        void updateCollision();
         void update();
 
-        void renderFruits(sf::RenderTarget& target);
         void renderText(sf::RenderTarget& target);
         void render();
 };
