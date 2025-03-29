@@ -1,15 +1,5 @@
 #pragma once 
-
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <vector>
-#include <sstream>
+#include "Fruit.h"
 
 // class Snake
 class Snake
@@ -27,6 +17,8 @@ private:
 public:
     Snake(float x = 0.f,float y = 0.f);
     ~Snake();
+
+    const sf::RectangleShape& snakeShape() const;
 
     void updateInput();
     void SnakePos(float x = 0.f,float y = 0.f);
