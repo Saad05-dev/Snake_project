@@ -38,62 +38,37 @@ void Game::initText()
     this->uiText.setFillColor(sf::Color::White);
     this->uiText.setString("NONE");
 }
-//initialize Fruit
-void Game::initFruits()
-{
-    this->Fruit.setPosition(10.f,10.f);
-    this->Fruit.setSize(sf::Vector2f(50.f,50.f));
-    this->Fruit.setScale(sf::Vector2f(0.5f,0.5f));
-    this->Fruit.setFillColor(sf::Color::Red);
-}
 //Ends the game
 const bool Game::getEndGame() const
 {
     return this->endGame;
 }
-//Spawn fruit
-void Game::spawnFruit()
-{
-    /*
-        return void
-        Spawns Fruit 
-        -Sets a randow position
-    */
-   this->Fruit.setPosition(
-    static_cast<float>(rand() % static_cast<int>(this->window->getSize().x 
-        - this->Fruit.getSize().x)),
-    static_cast<float>(rand() % static_cast<int>(this->window->getSize().y
-        - this->Fruit.getSize().y))
-   );
-   // Spawn Fruit
-   this->Fruits.push_back(this->Fruit);
-}
 //Updates position of Fruit
-void Game::updateFruits()
+void Game::spawnFruits()
 {
-    /*
-        return void
-        updates the Fruit spawn 
-    */
-   //update spawn timer
-   if(this->Fruits.size() < 1)
-   {
-    if(this->FruitspawnTimer >= this->FruitspawnTimerMax)
-    {
-        this->spawnFruit();
-        this->FruitspawnTimer = 0.f;
-    }
+    //TIMER
+    if(this->FruitspawnTimer < this->FruitspawnTimer)
+        this->FruitspawnTimer += 1.f;
     else
     {
-        this->FruitspawnTimer += 1.f;
+        if(this->fruits.size() < this->FruitspawnTimer)
+        {
+            this->fruits.push_back(Fruit(*this->window));
+            this->FruitspawnTimer = 0.f;
+        }
     }
-   }
 }
-//renders Fruits
-void Game::renderFruits(sf::RenderTarget& target)
+//checks for collision between snake and fruit
+void Game::updateCollision()
 {
-    //render fruit
-    target.draw(this->Fruit);
+    for(int i = this->fruits.size() -1; i >= 0; i--)
+    {
+        if(this->snake.snakeShape().getGlobalBounds().intersects(
+            this->fruits[i].fruitShape().getGlobalBounds()))
+            {
+                this->fruits.erase(this->fruits.begin() + i);
+            }
+    }
 }
 //Game uitext 
 void Game::updateText()
@@ -121,7 +96,6 @@ Game::Game()
     this->initWindow();
     this->initFonts();
     this->initText();
-    this->initFruits();
     this->SnakePos();
 }
 Game::~Game()
@@ -163,11 +137,12 @@ void Game::update()
     this->pollEvents();
     if(this->endGame == false)
     {
-        this->updateFruits();
+        this->spawnFruits();
 
         this->updateText();
 
         this->snake.update(this->window);
+        this->updateCollision();
     }
 }
 void Game::render()
@@ -182,7 +157,6 @@ void Game::render()
    this->window->clear(sf::Color(141,161,89));
 
    //Draw game objects
-   this->renderFruits(*this->window);
 
    this->renderText(*this->window);
 
