@@ -47,11 +47,11 @@ const bool Game::getEndGame() const
 void Game::spawnFruits()
 {
     //TIMER
-    if(this->FruitspawnTimer < this->FruitspawnTimer)
+    if(this->FruitspawnTimer < this->FruitspawnTimerMax)
         this->FruitspawnTimer += 1.f;
     else
     {
-        if(this->fruits.size() < this->FruitspawnTimer)
+        if(this->fruits.size() < this->Fruitspawn)
         {
             this->fruits.push_back(Fruit(*this->window));
             this->FruitspawnTimer = 0.f;
@@ -161,6 +161,11 @@ void Game::render()
    this->renderText(*this->window);
 
    this->snake.render(this->window);
+   for (auto i : this->fruits)
+   {
+        i.render(*this->window);
+   }
+   
 
    this->window->display();
 }
