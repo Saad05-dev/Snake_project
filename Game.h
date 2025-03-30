@@ -21,6 +21,7 @@ class Game
 
         //Text
         sf::Text uiText;
+        sf::Text endGameText;
 
         //Game logic
         bool endGame;
