@@ -33,10 +33,17 @@ void Game::initFonts()
 }
 void Game::initText()
 {
+    //Gui text init
     this->uiText.setFont(this->font);
     this->uiText.setCharacterSize(24);
     this->uiText.setFillColor(sf::Color::White);
-    this->uiText.setString("NONE");
+
+    //End game text
+    this->endGameText.setFont(this->font);
+    this->endGameText.setFillColor(sf::Color::Red);
+    this->endGameText.setCharacterSize(60);
+    this->endGameText.setPosition(sf::Vector2f(20,300));
+    this->endGameText.setString("YOU ARE DEAD, RESTART!");
 }
 //Ends the game
 const bool Game::getEndGame() const
@@ -63,11 +70,13 @@ void Game::updateCollision()
 {
     for(int i = this->fruits.size() -1; i >= 0; i--)
     {
-        if(this->snake.snakeShape().getGlobalBounds().intersects(
+        if(this->snake.getBody()[0].getGlobalBounds().intersects(
             this->fruits[i].fruitShape().getGlobalBounds()))
             {
-                this->fruits.erase(this->fruits.begin() + i);
                 this->points ++;
+                this->fruits.erase(this->fruits.begin() + i);
+                this->snake.grow();
+                spawnFruits();
             }
     }
 }
@@ -106,7 +115,7 @@ Game::~Game()
 //Accessors
 const bool Game::running() const
 {
-    return this->window->isOpen();
+    return this->window->isOpen() ;
 }
 // Functions
 void Game::pollEvents()
@@ -135,15 +144,25 @@ void Game::update()
         updates text
         update fruit
     */
-    this->pollEvents();
-    if(this->endGame == false)
+    
+
+    if(!this->endGame)
     {
         this->spawnFruits();
 
         this->updateText();
 
+        //updates snake
         this->snake.update(this->window);
+
+        //check for snake self collision
+        if(this->snake.snakeCollision())
+        {
+            //Ends the game
+            this->endGame = true;
+        }
         this->updateCollision();
+        this->pollEvents();
     }
 }
 void Game::render()
@@ -161,12 +180,24 @@ void Game::render()
 
    this->renderText(*this->window);
 
-   this->snake.render(this->window);
+   //render snake
+    this->snake.render(this->window);
+   //render Fruits
    for (auto i : this->fruits)
    {
         i.render(*this->window);
    }
-   
+   //render end text
+   if(this->endGame)
+   {
+    this->window->draw(this->endGameText);
+   }
+
+   //render end text
+   if(this->getEndGame())
+   {
+        this->window->draw(this->endGameText);
+   }
 
    this->window->display();
-}
+}   
