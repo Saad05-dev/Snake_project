@@ -39,11 +39,14 @@ void Game::initText()
     this->uiText.setFillColor(sf::Color::White);
 
     //End game text
+
+    std::stringstream ss;
+    ss << " Game over!\nyour score: " << this->points;
     this->endGameText.setFont(this->font);
-    this->endGameText.setFillColor(sf::Color::Red);
+    this->endGameText.setFillColor(sf::Color::Black);
     this->endGameText.setCharacterSize(60);
     this->endGameText.setPosition(sf::Vector2f(20,200));
-    this->endGameText.setString("YOU ARE DEAD,\n \n==RESTART!==");
+    this->endGameText.setString(ss.str());
 }
 //Ends the game
 const bool Game::getEndGame() const
@@ -163,6 +166,7 @@ void Game::update()
        if(!grew && this->snake.snakeCollision())
         {
             //Ends the game
+            this->uiText.setString("");
             this->endGame = true;
         }    
         grew = false;
