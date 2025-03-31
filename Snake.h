@@ -16,7 +16,6 @@ private:
     float segmentSpacing;  // Space between segments (can be 0)
 
     void initVariables();
-    void initShape();
     void initSnake();
 public:
     Snake(float x = 0.f, float y = 0.f);
