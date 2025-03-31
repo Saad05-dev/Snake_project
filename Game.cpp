@@ -42,8 +42,8 @@ void Game::initText()
     this->endGameText.setFont(this->font);
     this->endGameText.setFillColor(sf::Color::Red);
     this->endGameText.setCharacterSize(60);
-    this->endGameText.setPosition(sf::Vector2f(20,300));
-    this->endGameText.setString("YOU ARE DEAD, RESTART!");
+    this->endGameText.setPosition(sf::Vector2f(20,200));
+    this->endGameText.setString("YOU ARE DEAD,\n \n==RESTART!==");
 }
 //Ends the game
 const bool Game::getEndGame() const
@@ -68,18 +68,20 @@ void Game::spawnFruits()
 //checks for collision between snake and fruit
 void Game::updateCollision()
 {
-    for(int i = this->fruits.size() -1; i >= 0; i--)
+    for (int i = this->fruits.size() - 1; i >= 0; i--)
     {
-        if(this->snake.getBody()[0].getGlobalBounds().intersects(
+        if (this->snake.getBody()[0].getGlobalBounds().intersects(
             this->fruits[i].fruitShape().getGlobalBounds()))
-            {
-                this->points ++;
-                this->fruits.erase(this->fruits.begin() + i);
-                this->snake.grow();
-                spawnFruits();
-            }
+        {
+            this->points++;
+            this->fruits.erase(this->fruits.begin() + i);
+            this->snake.grow();
+            grew = true;
+            spawnFruits();
+        }
     }
 }
+
 //Game uitext 
 void Game::updateText()
 {
@@ -144,7 +146,7 @@ void Game::update()
         updates text
         update fruit
     */
-    
+   this->pollEvents();
 
     if(!this->endGame)
     {
@@ -154,15 +156,16 @@ void Game::update()
 
         //updates snake
         this->snake.update(this->window);
+        //checks if snake eats fruit and increase size
+        this->updateCollision();
 
         //check for snake self collision
-        if(this->snake.snakeCollision())
+       if(!grew && this->snake.snakeCollision())
         {
             //Ends the game
             this->endGame = true;
-        }
-        this->updateCollision();
-        this->pollEvents();
+        }    
+        grew = false;
     }
 }
 void Game::render()
@@ -191,12 +194,6 @@ void Game::render()
    if(this->endGame)
    {
     this->window->draw(this->endGameText);
-   }
-
-   //render end text
-   if(this->getEndGame())
-   {
-        this->window->draw(this->endGameText);
    }
 
    this->window->display();
