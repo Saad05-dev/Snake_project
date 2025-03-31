@@ -8,14 +8,6 @@ void Snake::initVariables()
     this->segmentSize = 25.f;
     this->segmentSpacing = 0.f; // Added spacing between segments to prevent overlap
 }
-
-//Initialize Snake's shape
-void Snake::initShape()
-{
-    // This function is unused since initSnake() does the actual initialization
-    // Consider removing this function or merging it with initSnake()
-}
-
 //initialize snake's segments
 void Snake::initSnake()
 {
