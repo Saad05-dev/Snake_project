@@ -24,6 +24,7 @@ class Game
         sf::Text endGameText;
 
         //Game logic
+        bool grew = false;
         bool endGame;
         unsigned points;
         int Fruitspawn;
