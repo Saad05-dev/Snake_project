@@ -130,7 +130,6 @@ void Snake::grow()
     // Add new segment to the snake
     snake.push_back(newSegment);
 
-    std::cout << "snake grew! new size: " << snake.size() << "\n";
 }
 
 //check if snake collides with it's tail
@@ -143,13 +142,6 @@ bool Snake::snakeCollision()
     {
         if(snake[0].getGlobalBounds().intersects(snake[i].getGlobalBounds()))
         {
-            std::cout << "head position: (" 
-            << snake[0].getPosition().x << ", " 
-            << snake[0].getPosition().y << ")\n";
-            std::cout << "colliding segment position: (" 
-            << snake[i].getPosition().x << ", " 
-            << snake[i].getPosition().y << ")\n";
-  
             return true; //snake collision
         }
     }
