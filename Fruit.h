@@ -24,8 +24,7 @@ public:
 
     //Functions
     const sf::RectangleShape fruitShape() const;
-
-    void update();
+    void setRandomPosition(sf::RenderTarget& window, const std::vector<sf::RectangleShape>& snakeBody);
     void render(sf::RenderTarget& target);
 };
 

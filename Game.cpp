@@ -60,7 +60,14 @@ void Game::spawnFruits()
     {
         if(this->fruits.size() < this->Fruitspawn)
         {
-            this->fruits.push_back(Fruit(*this->window));
+            // Create a new fruit
+            Fruit newFruit(*this->window);
+            
+            // Set its position avoiding the snake
+            newFruit.setRandomPosition(*this->window, this->snake.getBody());
+            
+            // Add it to the fruits vector
+            this->fruits.push_back(newFruit);
             this->FruitspawnTimer = 0.f;
         }
     }
