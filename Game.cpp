@@ -40,13 +40,10 @@ void Game::initText()
 
     //End game text
 
-    std::stringstream ss;
-    ss << " Game over!\nyour score: " << this->points;
     this->endGameText.setFont(this->font);
     this->endGameText.setFillColor(sf::Color::Black);
-    this->endGameText.setCharacterSize(60);
+    this->endGameText.setCharacterSize(55);
     this->endGameText.setPosition(sf::Vector2f(20,200));
-    this->endGameText.setString(ss.str());
 }
 //Ends the game
 const bool Game::getEndGame() const
@@ -88,10 +85,14 @@ void Game::updateCollision()
 //Game uitext 
 void Game::updateText()
 {
+    //points Text
     std::stringstream ss;
-
     ss << "Points: "<< this->points<<"\n";
     this->uiText.setString(ss.str());
+    //End game Text
+    std::stringstream sd;
+    sd << " Game over!\nyour score: " << this->points;
+    this->endGameText.setString(sd.str());
 }
 void Game::renderText(sf::RenderTarget& target)
 {
