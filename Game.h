@@ -1,6 +1,9 @@
 #pragma once
 #include "Snake.h"
 
+
+//Game file that stores score
+const string SCORE_FILE = "HighScore.txt";
 // start of Game class
 
 class Game
@@ -56,6 +59,9 @@ class Game
         void updateText();
         void updateCollision();
         void update();
+        //Score
+        void saveScore(int score);
+        vector<int> loadTopScore(int high = 3);
 
         void renderText(sf::RenderTarget& target);
         void render();

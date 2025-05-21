@@ -149,6 +149,32 @@ void Game::pollEvents()
         }
     } 
 }
+void Game::saveScore(int score) 
+{
+    ofstream outFile(SCORE_FILE, ios::app);
+    if (outFile.is_open()) {
+        outFile << score << '\n';
+        outFile.close();
+    }
+}
+
+std::vector<int> Game::loadTopScore(int high) 
+{
+    vector<int> scores;
+    ifstream inFile(SCORE_FILE);
+    int score;
+
+    while (inFile >> score) {
+        scores.push_back(score);
+    }
+
+    std::sort(scores.begin(), scores.end(), greater<int>());
+    if (scores.size() > high) {
+        scores.resize(high);
+    }
+
+    return scores;
+}
 void Game::update()
 {
     /*
