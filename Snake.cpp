@@ -134,11 +134,9 @@ void Snake::grow()
 
 //check if snake collides with it's tail
 bool Snake::snakeCollision() 
-{
-    if (snake.size() < 4) return false; // Need at least 4 segments for self-collision
-    
-    // Check if head collides with any body segment (starting from 4th segment to avoid false positives)
-    for (size_t i = 3; i < snake.size(); ++i)
+{   
+    // Check if head collides with any body segment 
+    for (size_t i = 1; i < snake.size(); ++i)
     {
         if(snake[0].getGlobalBounds().intersects(snake[i].getGlobalBounds()))
         {
