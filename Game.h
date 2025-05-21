@@ -1,7 +1,15 @@
 #pragma once
 #include "Snake.h"
 
-
+//Different Game status
+enum class GameState
+{
+    Start_menu,
+    Game,
+    Game_Over,
+    High_Scores,
+    Quit
+};
 //Game file that stores score
 const string SCORE_FILE = "HighScore.txt";
 // start of Game class
@@ -28,7 +36,6 @@ class Game
 
         //Game logic
         bool grew = false;
-        bool endGame;
         unsigned points;
         int Fruitspawn;
         float FruitspawnTimer;
@@ -50,7 +57,6 @@ class Game
 
         // Accessors
         const bool running() const;
-        const bool getEndGame() const;
 
         //functions
 

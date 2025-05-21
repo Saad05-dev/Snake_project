@@ -10,7 +10,6 @@ void Game::initVariables()
     //Game logic
     this->Fruitspawn = 1;
     this->points = 0;
-    this->endGame = false;
     this->FruitspawnTimerMax = 10.f;
     this->FruitspawnTimer = this->FruitspawnTimerMax;
 }
@@ -45,11 +44,7 @@ void Game::initText()
     this->endGameText.setCharacterSize(55);
     this->endGameText.setPosition(sf::Vector2f(20,200));
 }
-//Ends the game
-const bool Game::getEndGame() const
-{
-    return this->endGame;
-}
+
 //Updates position of Fruit
 void Game::spawnFruits()
 {
@@ -185,26 +180,7 @@ void Game::update()
     */
    this->pollEvents();
 
-    if(!this->endGame)
-    {
-        this->spawnFruits();
-
-        this->updateText();
-
-        //updates snake
-        this->snake.update(this->window);
-        //checks if snake eats fruit and increase size
-        this->updateCollision();
-
-        //check for snake self collision
-       if(!grew && this->snake.snakeCollision())
-        {
-            //Ends the game
-            this->uiText.setString("");
-            this->endGame = true;
-        }    
-        grew = false;
-    }
+    
 }
 void Game::render()
 {
@@ -227,11 +203,6 @@ void Game::render()
    for (auto i : this->fruits)
    {
         i.render(*this->window);
-   }
-   //render end text
-   if(this->endGame)
-   {
-    this->window->draw(this->endGameText);
    }
 
    this->window->display();
