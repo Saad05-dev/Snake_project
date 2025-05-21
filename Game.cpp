@@ -131,6 +131,7 @@ void Game::resetGame()
     this->points = 0;
     this->FruitspawnTimer = this->FruitspawnTimerMax;
     this->fruits.clear();
+    this->snake = Snake();
     this->SnakePos();
     grew = false;
 }
@@ -202,6 +203,7 @@ Game::Game()
     this->initVariables();
     this->initWindow();
     this->initFonts();
+    this->topScores = this->loadTopScore();
     this->initText();
     this->initStarMenu();
     this->initHighScore();
@@ -241,7 +243,11 @@ void Game::pollEvents()
                     for(auto& btn : this->menuButtons)
                     {
                         if(btn.is_Hovered(mousePos) && btn.onClick)
+                        {
                             btn.onClick(); //Switch state onclicking on button
+                            this->resetGame();
+                        }
+                            
                     }
                 }
                 else if(this->currentState == GameState::Game_Over)
@@ -249,7 +255,9 @@ void Game::pollEvents()
                     for(auto& btn : this->endGameButtons)
                     {
                         if(btn.is_Hovered(mousePos)&& btn.onClick)
+                        {
                             btn.onClick();
+                        }
                     }
                 } 
                 else if(this->currentState == GameState::High_Scores)
@@ -276,6 +284,8 @@ void Game::saveScore(int score)
         outFile << score << '\n';
         outFile.close();
     }
+    this->topScores = this->loadTopScore();
+    this->updateScoresText();
 }
 
 std::vector<int> Game::loadTopScore(int high) 
@@ -294,6 +304,15 @@ std::vector<int> Game::loadTopScore(int high)
     }
 
     return scores;
+}
+void Game::updateScoresText()
+{
+    string scoreDisplay;
+    for(int i = 0; i < topScores.size(); i++)
+    {
+        scoreDisplay += to_string(i+1) + "==> " + to_string(topScores[i]) + "\n\n\n";
+    }
+    this->scores.setString(scoreDisplay);
 }
 void Game::update()
 {
@@ -321,16 +340,18 @@ void Game::update()
             this->saveScore(this->points);
         }
         grew = false;
+    break;
     case GameState::Game_Over:
         this->updateText();
         this->initEndGame();
-        this->resetGame();
         break;
     case GameState::High_Scores:
-        this->loadTopScore();
+        this->topScores = this->loadTopScore();
+        this->updateScoresText();
         break;
     case GameState::Quit:
         this->window->close();
+        break;
     default:
         break;
     }
@@ -390,6 +411,7 @@ void Game::render()
        }
     break;
     case GameState::Quit:
+    break;
    default:
     break;
    }

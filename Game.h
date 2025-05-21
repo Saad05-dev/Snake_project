@@ -26,7 +26,7 @@ class Game
         GameState currentState;
         //Score state
         sf::RectangleShape container;
-        vector<int> topScores = this->loadTopScore();
+        vector<int> topScores;
         sf::Text scores,titleScore;
 
         //Game objects
@@ -111,6 +111,7 @@ class Game
         void spawnFruits();
         void updateText();
         void updateCollision();
+        void updateScoresText();
         void update();
         //Score
         void saveScore(int score);
