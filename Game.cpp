@@ -6,7 +6,8 @@
 void Game::initVariables()
 {
     this->window = nullptr;
-
+    //Game State
+    this->currentState = GameState::Start_menu;
     //Game logic
     this->Fruitspawn = 1;
     this->points = 0;
@@ -32,6 +33,12 @@ void Game::initFonts()
 }
 void Game::initText()
 {
+    //Game Title
+    this->title.setFont(this->font);
+    this->title.setString("SNAKE GAME");
+    this->title.setCharacterSize(50);
+    this->title.setFillColor(sf::Color::Yellow);
+    this->title.setPosition(150,100);
     //Gui text init
     this->uiText.setFont(this->font);
     this->uiText.setCharacterSize(24);
@@ -44,7 +51,30 @@ void Game::initText()
     this->endGameText.setCharacterSize(55);
     this->endGameText.setPosition(sf::Vector2f(20,200));
 }
+void Game::initStarMenu()
+{
+    Button Play_Game = makeButton("Play",{200,200});
+    Button high_Score_Btn = makeButton("High_Scores",{200,270});
+    Button quitBtn = makeButton("Quit",{200,340});
 
+    //Add onclick functionnality
+        Play_Game.onClick = [this]()
+        {
+            this->currentState = GameState::Game;
+        };
+        high_Score_Btn.onClick = [this]()
+        {
+            this->currentState = GameState::High_Scores;
+        };
+        quitBtn.onClick = [this]()
+        {
+            this->currentState = GameState::Quit;
+        };
+        //Add buttons
+        this->menuButtons.push_back(Play_Game);
+        this->menuButtons.push_back(high_Score_Btn);
+        this->menuButtons.push_back(quitBtn);
+}
 //Updates position of Fruit
 void Game::spawnFruits()
 {
@@ -114,6 +144,7 @@ Game::Game()
     this->initWindow();
     this->initFonts();
     this->initText();
+    this->initStarMenu();
     this->SnakePos();
 }
 Game::~Game()
@@ -192,18 +223,40 @@ void Game::render()
         render the game objects
     */
    this->window->clear(sf::Color(141,161,89));
-
-   //Draw game objects
-
-   this->renderText(*this->window);
-
-   //render snake
-    this->snake.render(this->window);
-   //render Fruits
-   for (auto i : this->fruits)
+   switch (this->currentState)
    {
-        i.render(*this->window);
-   }
+    //Draw start menu
+   case GameState::Start_menu:
+        this->window->draw(this->title);
+        // Draw menu buttons
+        for (auto& btn : this->menuButtons)
+        {
+                btn.drawButton(*this->window);
+        }
+    break;
+    case GameState::Game:
+        //Draw game objects
 
+        this->renderText(*this->window);
+
+        //render snake
+            this->snake.render(this->window);
+        //render Fruits
+        for (auto i : this->fruits)
+        {
+                i.render(*this->window);
+        }
+    break;
+    case GameState::Game_Over:
+        this->window->clear(sf::Color(141, 161, 89));
+        this->window->draw(this->endGameText);
+    break;
+    case GameState::High_Scores:
+    break;
+    case GameState::Quit:
+   default:
+    break;
+   }
+   
    this->window->display();
 }   

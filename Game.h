@@ -22,6 +22,8 @@ class Game
         sf::RenderWindow *window;
         sf::VideoMode videoMode;
         sf::Event ev;
+        //Game State
+        GameState currentState;
 
         //Game objects
         Snake snake;
@@ -31,6 +33,7 @@ class Game
         sf::Font font;
 
         //Text
+        sf::Text title;
         sf::Text uiText;
         sf::Text endGameText;
 
@@ -46,11 +49,46 @@ class Game
         void initWindow();
         void initFonts();
         void initText();
+        void initStarMenu();
         //center snake Pos
         void SnakePos();
 
     public:
+        //Button structure for navigation between states
+        struct Button
+        {
+                sf::RectangleShape shape;
+                sf::Text label;
+                bool is_Hovered(const sf::Vector2f& mousePos) const
+                {
+                    return shape.getGlobalBounds().contains(mousePos);
+                }
+                void drawButton(sf::RenderWindow& window) const
+                {
+                    window.draw(shape);
+                    window.draw(label);
+                }
+                function<void()> onClick;
+        };
+        Button makeButton(const string& text,sf::Vector2f pos)
+        {
+            Button btn;
+            btn.shape.setSize({400,50});
+            btn.shape.setPosition(pos);
+            btn.shape.setFillColor(sf::Color(41,57,35));
+            btn.shape.setOutlineColor(sf::Color::White);
+            btn.shape.setOutlineThickness(-3.f);
 
+            btn.label.setFont(this->font);
+            btn.label.setString(text);
+            btn.label.setCharacterSize(24);
+            btn.label.setFillColor(sf::Color::White);
+            btn.label.setPosition(pos.x + 20,pos.y + 10);
+
+            return btn;
+        }
+        //Buttons
+        vector<Button> menuButtons;
         //Constructor / Deconstructor
         Game();
         virtual ~Game();
