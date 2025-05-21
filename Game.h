@@ -56,6 +56,7 @@ class Game
         void initStarMenu();
         void initHighScore();
         void initEndGame();
+        void resetGame();
         //center snake Pos
         void SnakePos();
 
@@ -96,6 +97,7 @@ class Game
         //Buttons
         vector<Button> menuButtons;
         vector<Button> highScoreButtons;
+        vector<Button> endGameButtons;
         //Constructor / Deconstructor
         Game();
         virtual ~Game();

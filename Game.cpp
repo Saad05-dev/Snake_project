@@ -10,7 +10,7 @@ void Game::initVariables()
     this->currentState = GameState::Start_menu;
     //Game logic
     this->Fruitspawn = 1;
-    this->points = 50;
+    this->points = 0;
     this->FruitspawnTimerMax = 10.f;
     this->FruitspawnTimer = this->FruitspawnTimerMax;
 }
@@ -44,12 +44,6 @@ void Game::initText()
     this->uiText.setCharacterSize(24);
     this->uiText.setFillColor(sf::Color::White);
 
-    //End game text
-
-    this->endGameText.setFont(this->font);
-    this->endGameText.setFillColor(sf::Color::Black);
-    this->endGameText.setCharacterSize(55);
-    this->endGameText.setPosition(sf::Vector2f(20,200));
     //High score text
     //Title
     this->titleScore.setFont(this->font);
@@ -93,6 +87,7 @@ void Game::initStarMenu()
         this->menuButtons.push_back(high_Score_Btn);
         this->menuButtons.push_back(quitBtn);
 }
+//High score menu
 void Game::initHighScore()
 {
     //container holding scores
@@ -108,6 +103,36 @@ void Game::initHighScore()
         this->currentState = GameState::Start_menu;
     };
     this->highScoreButtons.push_back(backBtn);
+}
+//Endgame Menu
+void Game::initEndGame()
+{
+    this->endGameText.setFont(this->font);
+    this->endGameText.setFillColor(sf::Color::Black);
+    this->endGameText.setCharacterSize(55);
+    this->endGameText.setPosition(sf::Vector2f(20,200));
+    //Back to menu Button
+    Button backBtn = makeButton("Back to Menu", {200,500});
+    backBtn.onClick = [this]()
+    {
+        this->currentState = GameState::Start_menu;
+    };
+    Button goToHighScoreButton = makeButton("Top Scores",{200, 430});
+    goToHighScoreButton.onClick= [this]()
+    {
+        this->currentState = GameState::High_Scores;
+    };
+    this->endGameButtons.push_back(goToHighScoreButton);
+    this->endGameButtons.push_back(backBtn);
+}
+void Game::resetGame()
+{
+    //reset Game variables
+    this->points = 0;
+    this->FruitspawnTimer = this->FruitspawnTimerMax;
+    this->fruits.clear();
+    this->SnakePos();
+    grew = false;
 }
 //Updates position of Fruit
 void Game::spawnFruits()
@@ -180,6 +205,7 @@ Game::Game()
     this->initText();
     this->initStarMenu();
     this->initHighScore();
+    this->initEndGame();
     this->SnakePos();
 }
 Game::~Game()
@@ -205,6 +231,39 @@ void Game::pollEvents()
         case sf::Event::KeyPressed:
             if(this->ev.key.code == sf::Keyboard::Escape)
                 this->window->close();
+            break;
+        case sf::Event::MouseButtonPressed:
+            if(ev.mouseButton.button == sf::Mouse::Left)
+            {
+                sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+                if(this->currentState == GameState::Start_menu)
+                {
+                    for(auto& btn : this->menuButtons)
+                    {
+                        if(btn.is_Hovered(mousePos) && btn.onClick)
+                            btn.onClick(); //Switch state onclicking on button
+                    }
+                }
+                else if(this->currentState == GameState::Game_Over)
+                {
+                    for(auto& btn : this->endGameButtons)
+                    {
+                        if(btn.is_Hovered(mousePos)&& btn.onClick)
+                            btn.onClick();
+                    }
+                } 
+                else if(this->currentState == GameState::High_Scores)
+                {
+                    for(auto& btn : this->highScoreButtons)
+                    {
+                        if(btn.is_Hovered(mousePos) && btn.onClick)
+                        {
+                            btn.onClick();
+                        }
+                    }
+                }
+            } 
+            break;
         default:
             break;
         }
@@ -246,7 +305,36 @@ void Game::update()
     */
    this->pollEvents();
 
-    
+    switch (this->currentState)
+    {
+    case GameState::Start_menu:
+        this->initStarMenu();
+        break;
+    case GameState::Game:
+        this->spawnFruits();
+        this->updateText();
+        this->snake.update(this->window);
+        this->updateCollision();
+        if (!grew && this->snake.snakeCollision()) 
+        {
+            this->currentState = GameState::Game_Over;
+            this->saveScore(this->points);
+        }
+        grew = false;
+    case GameState::Game_Over:
+        this->updateText();
+        this->initEndGame();
+        this->resetGame();
+        break;
+    case GameState::High_Scores:
+        this->loadTopScore();
+        break;
+    case GameState::Quit:
+        this->window->close();
+    default:
+        break;
+    }
+    //TO DO Call savescore function after game over to save the current score
 }
 void Game::render()
 {
@@ -275,16 +363,20 @@ void Game::render()
         this->renderText(*this->window);
 
         //render snake
-            this->snake.render(this->window);
+        this->snake.render(this->window);
         //render Fruits
         for (auto i : this->fruits)
         {
-                i.render(*this->window);
+            i.render(*this->window);
         }
     break;
     case GameState::Game_Over:
         this->window->clear(sf::Color(141, 161, 89));
         this->window->draw(this->endGameText);
+        for(auto& btn : this->endGameButtons)
+        {
+            btn.drawButton(*this->window);
+        }
     break;
     case GameState::High_Scores:
         this->window->clear(sf::Color(141, 161, 89));
