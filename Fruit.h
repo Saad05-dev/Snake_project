@@ -1,15 +1,20 @@
 #pragma once
 
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <algorithm>
+#include <fstream>
+#include <functional>
+//Sfml
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+
+using namespace std;
 
 class Fruit
 {
