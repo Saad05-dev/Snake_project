@@ -24,6 +24,10 @@ class Game
         sf::Event ev;
         //Game State
         GameState currentState;
+        //Score state
+        sf::RectangleShape container;
+        vector<int> topScores = this->loadTopScore();
+        sf::Text scores,titleScore;
 
         //Game objects
         Snake snake;
@@ -50,6 +54,8 @@ class Game
         void initFonts();
         void initText();
         void initStarMenu();
+        void initHighScore();
+        void initEndGame();
         //center snake Pos
         void SnakePos();
 
@@ -89,6 +95,7 @@ class Game
         }
         //Buttons
         vector<Button> menuButtons;
+        vector<Button> highScoreButtons;
         //Constructor / Deconstructor
         Game();
         virtual ~Game();

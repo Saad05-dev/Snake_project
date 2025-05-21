@@ -10,7 +10,7 @@ void Game::initVariables()
     this->currentState = GameState::Start_menu;
     //Game logic
     this->Fruitspawn = 1;
-    this->points = 0;
+    this->points = 50;
     this->FruitspawnTimerMax = 10.f;
     this->FruitspawnTimer = this->FruitspawnTimerMax;
 }
@@ -50,6 +50,24 @@ void Game::initText()
     this->endGameText.setFillColor(sf::Color::Black);
     this->endGameText.setCharacterSize(55);
     this->endGameText.setPosition(sf::Vector2f(20,200));
+    //High score text
+    //Title
+    this->titleScore.setFont(this->font);
+    this->titleScore.setFillColor(sf::Color::Yellow);
+    this->titleScore.setString("Top Scores:");
+    this->titleScore.setCharacterSize(20);
+    this->titleScore.setPosition(285,180);
+    //Scores
+    this->scores.setFont(this->font);
+    this->scores.setFillColor(sf::Color::White);
+    this->scores.setCharacterSize(17);
+    string scoreDisplay;
+    for(int i = 0;i < topScores.size();i++)
+    {
+        scoreDisplay += to_string(i+1) + "==> " + to_string(topScores[i]) + "\n\n\n";
+    }
+    this->scores.setString(scoreDisplay);
+    this->scores.setPosition(250,250);
 }
 void Game::initStarMenu()
 {
@@ -74,6 +92,22 @@ void Game::initStarMenu()
         this->menuButtons.push_back(Play_Game);
         this->menuButtons.push_back(high_Score_Btn);
         this->menuButtons.push_back(quitBtn);
+}
+void Game::initHighScore()
+{
+    //container holding scores
+    container.setFillColor(sf::Color(41,57,35));
+    container.setSize({400,300});
+    container.setPosition({200,150});
+    container.setOutlineColor(sf::Color::White);
+    container.setOutlineThickness(-3.f);
+    //Back to menu button
+    Button backBtn = makeButton("Back to Menu", {200,500});
+    backBtn.onClick = [this]()
+    {
+        this->currentState = GameState::Start_menu;
+    };
+    this->highScoreButtons.push_back(backBtn);
 }
 //Updates position of Fruit
 void Game::spawnFruits()
@@ -145,6 +179,7 @@ Game::Game()
     this->initFonts();
     this->initText();
     this->initStarMenu();
+    this->initHighScore();
     this->SnakePos();
 }
 Game::~Game()
@@ -231,7 +266,7 @@ void Game::render()
         // Draw menu buttons
         for (auto& btn : this->menuButtons)
         {
-                btn.drawButton(*this->window);
+            btn.drawButton(*this->window);
         }
     break;
     case GameState::Game:
@@ -252,6 +287,15 @@ void Game::render()
         this->window->draw(this->endGameText);
     break;
     case GameState::High_Scores:
+        this->window->clear(sf::Color(141, 161, 89));
+        this->window->draw(this->container);
+       this->window->draw(this->titleScore);
+       this->window->draw(this->scores);
+       //Button to return to main menu
+       for (auto& btn : this->highScoreButtons)
+       {
+            btn.drawButton(*this->window);
+       }
     break;
     case GameState::Quit:
    default:
